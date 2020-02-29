@@ -1,0 +1,122 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} INDEX - Bennes {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="/bennes/create">
+        {% csrf_token %}
+    <div class="container">
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Creation d'une nouvelle benne</div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">N° Millesime:</span></div>
+            {{ form.idMillesime }}
+          </div>
+        </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">N° Benne:</span></div>
+              {{ form.idBenne }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Benne:</span></div>
+              {{ form.idMateriel }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Date de reception:</span></div>
+              {{ form.dateRecep }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Densite :</span></div>
+              {{ form.densite }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Temperature :</span></div>
+              {{ form.temperature }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Alcool Probable :</span></div>
+              {{ form.alcProb }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-8">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">So2 :</span></div>
+                {{ form.so2 }}
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">% So2 :</span></div>
+                {{ form.pourcentSO2 }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Meteo :</span></div>
+              {{ form.meteo }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Autre 1 :</span></div>
+              {{ form.autre1 }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Autre 2 :</span></div>
+              {{ form.autre2 }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Opérateur :</span></div>
+              {{ form.idOperateur }}
+            </div>
+          </div>
+
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label">Provenance de:</label>
+            <div class="col-md-9 col-form-label">
+              {% for parcelle in lesparcelles %}
+                <div class="form-check checkbox">
+                  <input class="form-control" name="parcelles" id="{{parcelle.numIlot}}" type="checkbox" requiered_id="id_parcelles" value="{{parcelle.numIlot}}">
+                  <label class="form-check-label" for="{{parcelle.numIlot}}">{{parcelle.nomParcelle}}</label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}
