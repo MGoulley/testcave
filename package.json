@@ -1,7 +1,7 @@
 {
-  "name": "django-dashboard-coreui",
+  "name": "MaCave",
   "version": "1.0.0",
-  "description": "A simple UI-Ready Django boilerplate.",
+  "description": "Logiciel de gestion de cave.",
   "scripts": {
     "lint": "eslint ."
   },
@@ -14,16 +14,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/app-generator/django-dashboard-coreui"
+    "url": "https://github.com/MGoulley/testcave"
   },
   "keywords": [
     "django",
-    "admin-panel",
-    "open-source"
+    "admin-panel"
   ],
-  "author": "AppSeed.us",
+  "author": "Matthias Goulley",
   "contributors": [
-    "AppSeed Support <support@appseed.us>"
+    "Matthias Goulley"
   ],
   "license": "MIT"
 }
