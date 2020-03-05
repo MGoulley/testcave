@@ -22,6 +22,4 @@ class Benne(models.Model):
         db_table = "benne"
 
     def __str__(self):
-        #return self.parcelles.all().values_list('nomParcelle', flat=True)
         return '-'.join([str(i) for i in self.parcelles.all().values_list('nomParcelle', flat=True)])
-        #return " ".join(list(self.parcelles.all()))

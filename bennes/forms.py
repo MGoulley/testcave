@@ -25,7 +25,7 @@ class BenneForm(forms.ModelForm):
             'class': "form-control"
         }
     ))
-    idMillesime = forms.IntegerField(widget=forms.TextInput(
+    idMillesime = forms.IntegerField(initial='0000000', widget=forms.TextInput(
         attrs={
             'class': "form-control"
         }

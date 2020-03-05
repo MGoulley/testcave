@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'parcelles',
     'millesimes',
     'bennes',
+    'materiels',
     'app'  # Enable the inner app
 ]
 

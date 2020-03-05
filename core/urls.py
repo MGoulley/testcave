@@ -13,5 +13,6 @@ urlpatterns = [
     path("", include("app.urls")),  # add this
     path("parcelles/", include("parcelles.urls")),
     path("millesimes/", include("millesimes.urls")),
+    path("materiels/", include("materiels.urls")),
     path("bennes/", include("bennes.urls"))  # add this
 ]
