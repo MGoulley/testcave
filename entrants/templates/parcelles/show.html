@@ -14,10 +14,8 @@
             <tr>
               <th>Numéro d'ilot</th>
               <th>Nom de la parcelle</th>
-              <th>Domaine</th>
               <th>Appellation</th>
-              <th>Propriétaire</th>
-              <th>Surface</th>
+              <th>Domaine, Propriétaire, Surface</th>
               <th>Commune</th>
               <th>Ref Cadastre</th>
               <th>Annee de Plantation</th>
@@ -26,24 +24,22 @@
             </tr>
           </thead>
           <tbody>
-{% for parcelle in data %}
+            {% for parcelle in data %}
             <tr>
               <td>{{ parcelle.numIlot }}</td>
               <td>{{ parcelle.nomParcelle }}</td>
-              <td>{{ parcelle.domaine }}</td>
               <td>{{ parcelle.appellation }}</td>
-              <td>{{ parcelle.proprietaire }}</td>
-              <td>{{ parcelle.surface }}</td>
+              <td>{% for prop in parcelle.parcelleetendue_set.all %}{{ prop.domaine.nom }}, {{ prop.proprietaire }}, {{ prop.surface }}</br>{% endfor %}</td>
               <td>{{ parcelle.commune }}</td>
               <td>{{ parcelle.refCadastre }}</td>
               <td>{{ parcelle.anneesPlantation }}</td>
               <td>{{ parcelle.datebio }}</td>
               <td>
-                <a href="edit/{{ parcelle.numIlot }}"><span class="badge badge-warning">Modifier</span></a>
-                <a href="delete/{{ parcelle.numIlot }}"><span class="badge badge-danger">Supprimer</span></a>
+                <a href="edit/{{ parcelle.id }}"><span class="badge badge-warning">Modifier</span></a>
+                <a href="delete/{{ parcelle.id }}"><span class="badge badge-danger">Supprimer</span></a>
               </td>
             </tr>
-{% endfor %}
+            {% endfor %}
           </tbody>
         </table>
         <center><a href="create" class="btn btn-primary">Ajouter une nouvelle Parcelle</a></center>

@@ -13,10 +13,9 @@ urlpatterns = [
     path(MODEL_PARCELLE_URL_NAME + '', views.parcelle_show),
     path(MODEL_PARCELLE_URL_NAME + 'create', views.parcelle_create),
     path(MODEL_PARCELLE_URL_NAME + 'show', views.parcelle_show),
-    path(MODEL_PARCELLE_URL_NAME + 'edit/<int:numIlot>', views.parcelle_edit),
-    path(MODEL_PARCELLE_URL_NAME + 'update/<int:numIlot>', views.parcelle_update),
-    path(MODEL_PARCELLE_URL_NAME + 'delete/<int:numIlot>', views.parcelle_destroy),
-    path(MODEL_PARCELLE_URL_NAME + 'reset', views.parcelle_reset),
+    path(MODEL_PARCELLE_URL_NAME + 'edit/<int:id>', views.parcelle_edit),
+    path(MODEL_PARCELLE_URL_NAME + 'update/<int:id>', views.parcelle_update),
+    path(MODEL_PARCELLE_URL_NAME + 'delete/<int:id>', views.parcelle_destroy),
     path(
         MODEL_PARCELLE_URL_NAME + 'parcelle-autocomplete/',
         views.ParcelleAutocomplete.as_view(model=Parcelle),
