@@ -1,0 +1,68 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} EDIT - Organisation {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="/administration/organisations/update/{{ data.id }}">
+        {% csrf_token %}
+    <div class="container">
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Mise à jour de l'Organisation {{ data.nom }}</div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">Nom :</span></div>
+            <input class="form-control" id="id_nom" type="text" name="nom" value="{{ data.nom }}">
+          </div>
+        </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Adresse :</span></div>
+              <input class="form-control" id="id_adresse" type="text" name="adresse" value="{{ data.adresse }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Tel :</span></div>
+              <input class="form-control" id="id_tel" type="text" name="tel" value="{{ data.tel }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Proprietaire :</span></div>
+              <input class="form-control" id="id_proprietaire" type="text" name="proprietaire" value="{{ data.proprietaire }}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label">Domaines :</label>
+            <div class="col-md-9 col-form-label">
+              {% for domaine in domaines %}
+                <div class="form-check checkbox">
+                  {% if domaine in data.domaines.all %}
+                    <input class="form-control" name="domaines" id="{{domaine.id}}" type="checkbox" requiered_id="id_domaines" value="{{domaine.id}}" checked>
+                  {% else %}
+                    <input class="form-control" name="domaines" id="{{domaine.id}}" type="checkbox" requiered_id="id_domaines" value="{{domaine.id}}">
+                  {% endif %}
+                  <label class="form-check-label" for="{{domaine.id}}">{{domaine.nom}}</label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <button class="btn btn-sm btn-primary" type="submit">Modifier</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

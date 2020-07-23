@@ -1,1 +1,86 @@
 
+# ORGANISATION
+
+@login_required(login_url="/login/")
+def organisation_create(request):
+    if request.method == "POST":
+        form = OrganisationForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+                return redirect("/administration/organisations/show")
+            except:
+                pass
+    else:
+        form = OrganisationForm()
+    return render(request,'organisations/index.html',{'form':form})
+
+@login_required(login_url="/login/")
+def organisation_show(request):
+    data = Organisation.objects.all()
+    return render(request,"organisations/show.html",{'data':data})
+
+@login_required(login_url="/login/")
+def organisation_edit(request, id):
+    data = Organisation.objects.get(pk=id)
+    domaines = Domaine.objects.all()
+    return render(request,'organisations/edit.html', {'data':data, 'domaines': domaines})
+
+@login_required(login_url="/login/")
+def organisation_update(request, id):
+    data = Organisation.objects.get(pk=id)
+    domaines = Domaine.objects.all()
+    post = request.POST.copy()
+    post.setlist("domaines", [Domaine.objects.get(pk=id) for id in request.POST.getlist("domaines")])
+    request.POST = post
+    form = OrganisationForm(request.POST, instance = data)
+    if form.is_valid():
+        form.save()
+        return redirect("/administration/organisations/show")
+    else:
+        data = Organisation.objects.get(pk=id)
+    return render(request, 'organisations/edit.html', {'data': data, 'domaines': domaines})
+
+@login_required(login_url="/login/")
+def organisation_destroy(request, id):
+    data = Organisation.objects.get(pk=id)
+    data.delete()
+    return redirect("/administration/organisations/show")
+
+
+
+""" path(MODEL_ORGANISATION_URL_NAME + '', views.organisation_show),
+    path(MODEL_ORGANISATION_URL_NAME + 'create', views.organisation_create),
+    path(MODEL_ORGANISATION_URL_NAME + 'show', views.organisation_show),
+    path(MODEL_ORGANISATION_URL_NAME + 'edit/<int:id>', views.organisation_edit),
+    path(MODEL_ORGANISATION_URL_NAME + 'update/<int:id>', views.organisation_update),
+    path(MODEL_ORGANISATION_URL_NAME + 'delete/<int:id>', views.organisation_destroy), """
+
+
+
+
+""" class OrganisationForm(forms.ModelForm):
+    class Meta:
+        model = Organisation
+        fields = '__all__'
+
+    nom = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': "form-control"
+        }
+    ))
+    adresse = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': "form-control"
+        }
+    ))
+    tel = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': "form-control"
+        }
+    ))
+    proprietaire = forms.CharField(widget=forms.TextInput(
+        attrs={
+            'class': "form-control"
+        }
+    )) """

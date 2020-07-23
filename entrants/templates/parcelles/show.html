@@ -1,0 +1,60 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} SHOW - Parcelles {% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header"><i class="fa fa-align-justify"></i> Liste des parcelles</div>
+      <div class="card-body">
+        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Numéro d'ilot</th>
+              <th>Nom de la parcelle</th>
+              <th>Domaine</th>
+              <th>Appellation</th>
+              <th>Propriétaire</th>
+              <th>Surface</th>
+              <th>Commune</th>
+              <th>Ref Cadastre</th>
+              <th>Annee de Plantation</th>
+              <th>Date BIO</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+{% for parcelle in data %}
+            <tr>
+              <td>{{ parcelle.numIlot }}</td>
+              <td>{{ parcelle.nomParcelle }}</td>
+              <td>{{ parcelle.domaine }}</td>
+              <td>{{ parcelle.appellation }}</td>
+              <td>{{ parcelle.proprietaire }}</td>
+              <td>{{ parcelle.surface }}</td>
+              <td>{{ parcelle.commune }}</td>
+              <td>{{ parcelle.refCadastre }}</td>
+              <td>{{ parcelle.anneesPlantation }}</td>
+              <td>{{ parcelle.datebio }}</td>
+              <td>
+                <a href="edit/{{ parcelle.numIlot }}"><span class="badge badge-warning">Modifier</span></a>
+                <a href="delete/{{ parcelle.numIlot }}"><span class="badge badge-danger">Supprimer</span></a>
+              </td>
+            </tr>
+{% endfor %}
+          </tbody>
+        </table>
+        <center><a href="create" class="btn btn-primary">Ajouter une nouvelle Parcelle</a></center>
+      </div>
+    </div>
+  </div>
+  <!-- /.col-->
+</div>
+<!-- /.row-->
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

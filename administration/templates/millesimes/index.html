@@ -1,0 +1,41 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} INDEX - Millesimes {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="create">
+        {% csrf_token %}
+    <div class="container">
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Creation d'un nouveau millesime</div>
+      <div class="card-body">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Année du millesime :</span></div>
+              {{ form.annee }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Nom du millesime :</span></div>
+              {{ form.nomMillesime }}
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

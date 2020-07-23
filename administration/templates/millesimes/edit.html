@@ -1,0 +1,41 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} EDIT - Millesimes {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="/administration/millesimes/update/{{ millesime.annee }}">
+        {% csrf_token %}
+    <div class="container">
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Mise à jour du millesime {{ millesime.nomMillesime }}</div>
+      <div class="card-body">
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Année du millesime:</span></div>
+              <input class="form-control" id="id_annee" type="text" name="annee" value="{{ millesime.annee }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Nom du millesime :</span></div>
+              <input class="form-control" id="id_nomMillesime" type="text" name="nomMillesime" value="{{ millesime.nomMillesime }}">
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <button class="btn btn-sm btn-primary" type="submit">Modifier</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

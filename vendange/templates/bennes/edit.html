@@ -1,0 +1,126 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} EDIT - Benne {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="/bennes/update/{{ benne.id }}">
+        {% csrf_token %}
+    <div class="container">
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Mise à jour de la benne {{ benne.idBenne }}</div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">N° Millesime :</span></div>
+            <input class="form-control" id="id_idMillesime" type="text" name="idMillesime" value="{{ benne.idMillesime }}">
+          </div>
+        </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">N° Benne</span></div>
+              <input class="form-control" id="id_idBenne" type="text" name="idBenne" value="{{ benne.idBenne }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Benne :</span></div>
+              <input class="form-control" id="id_idMateriel" type="text" name="idMateriel" value="{{ benne.idMateriel }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Date de reception :</span></div>
+              <input class="form-control" id="id_dateRecep" type="text" name="dateRecep" value="{{ benne.dateRecep }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Densite :</span></div>
+              <input class="form-control" id="id_densite" type="text" name="densite" value="{{ benne.densite }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Temperature :</span></div>
+              <input class="form-control" id="id_temperature" type="text" name="temperature" value="{{ benne.temperature }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Alcool Probable :</span></div>
+              <input class="form-control" id="id_alcProb" type="text" name="alcProb" value="{{ benne.alcProb }}">
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-8">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">So2 :</span></div>
+                <input class="form-control" id="id_so2" type="text" name="so2" value="{{ benne.so2 }}">
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">% So2 :</span></div>
+                <input class="form-control" id="id_pourcentSO2" type="text" name="pourcentSO2" value="{{ benne.pourcentSO2 }}">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Meteo :</span></div>
+              <input class="form-control" id="id_meteo" type="text" name="meteo" value="{{ benne.meteo }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Autre 1 :</span></div>
+              <input class="form-control" id="id_autre1" type="text" name="autre1" value="{{ benne.autre1 }}">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Autre 2 :</span></div>
+              <input class="form-control" id="id_autre2" type="text" name="autre2" value="{{ benne.autre2 }}">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Opérateur :</span></div>
+              <input class="form-control" id="id_idOperateur" type="text" name="idOperateur" value="{{ benne.idOperateur }}">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-md-3 col-form-label">Provenance de:</label>
+            <div class="col-md-9 col-form-label">
+              {% for parcelle in lesparcelles %}
+                <div class="form-check checkbox">
+                  {% if parcelle in benne.parcelles.all %}
+                    <input class="form-control" name="parcelles" id="{{parcelle.numIlot}}" type="checkbox" requiered_id="id_parcelles" value="{{parcelle.numIlot}}" checked>
+                  {% else %}
+                    <input class="form-control" name="parcelles" id="{{parcelle.numIlot}}" type="checkbox" requiered_id="id_parcelles" value="{{parcelle.numIlot}}">
+                  {% endif %}
+                  <label class="form-check-label" for="{{parcelle.numIlot}}">{{parcelle.nomParcelle}}</label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <button class="btn btn-sm btn-primary" type="submit">Modifier</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+<script type="text/javascript" src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+{% endblock javascripts %}

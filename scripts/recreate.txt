@@ -1,0 +1,10 @@
+python3 manage.py sqlflush
+rm -f db.sqlite3
+rm les dossiers migrations
+
+python3 manage.py makemigrations administration
+python3 manage.py makemigrations entrants
+python3 manage.py makemigrations vendange
+python3 manage.py migrate
+python3 manage.py createsuperuser
+python3 manage.py runserver

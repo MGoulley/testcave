@@ -1,0 +1,41 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} EDIT - Benne {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="/administration/domaines/update/{{ data.id }}">
+        {% csrf_token %}
+    <div class="container">
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Mise à jour du domaine {{ data.nom }}</div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">Nom du Domaine :</span></div>
+            <input class="form-control" id="id_nom" type="text" name="nom" value="{{ data.nom }}">
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">Adresse :</span></div>
+            <input class="form-control" id="id_adresse" type="text" name="adresse" value="{{ data.adresse }}">
+          </div>
+        </div>
+          <div class="form-group form-actions">
+            <button class="btn btn-sm btn-primary" type="submit">Modifier</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

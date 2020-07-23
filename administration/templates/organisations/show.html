@@ -1,0 +1,52 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} SHOW - Organisations {% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header"><i class="fa fa-align-justify"></i> Liste des organisations</div>
+      <div class="card-body">
+        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Nom</th>
+			        <th>Adresse</th>
+              <th>N° tel</th>
+              <th>Propriétaire</th>
+              <th>Domaines</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+{% for row in data %}
+            <tr>
+              <td>{{ row.nom }}</td>
+              <td>{{ row.adresse }}</td>
+              <td>{{ row.tel }}</td>
+              <td>{{ row.proprietaire }}</td>
+              <td>{% for domaine in row.domaines.all %}
+                {{ domaine.nom }}
+                {% endfor %}</td>
+              <td>
+                <a href="edit/{{ row.id }}"><span class="badge badge-warning">Modifier</span></a>
+                <a href="delete/{{ row.id }}"><span class="badge badge-danger">Supprimer</span></a>
+              </td>
+            </tr>
+{% endfor %}
+          </tbody>
+        </table>
+        <center><a href="create" class="btn btn-primary">Ajouter une nouvelle organisation</a></center>
+      </div>
+    </div>
+  </div>
+  <!-- /.col-->
+</div>
+<!-- /.row-->
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

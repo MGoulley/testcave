@@ -1,0 +1,79 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} SHOW - Bennes {% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header"><i class="fa fa-align-justify"></i> Liste des bennes</div>
+      <div class="card-body">
+        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+          <thead>
+            <tr>
+              <th>N° Benne</th>
+			        <th>Benne</th>
+              <th>N° Millesime</th>
+              <th>Date de reception</th>
+              <th>Densite</th>
+              <th>Temperature</th>
+              <th>Alcool Probable</th>
+        		  <th>So2</th>
+        		  <th>% So2</th>
+        		  <th>Autre 1</th>
+        		  <th>Autre 2</th>
+        		  <th>Meteo</th>
+        		  <th>Operateur</th>
+              <th>Parcelles</th>
+            </tr>
+          </thead>
+          <tbody>
+{% for benne in bennes %}
+            <tr>
+              <td>{{ benne.idBenne }}</td>
+              <td>{{ benne.idMateriel }}</td>
+              <td>{{ benne.idMillesime }}</td>
+              <td>{{ benne.dateRecep }}</td>
+              <td>{{ benne.densite }}</td>
+      			  <td>{{ benne.temperature }}</td>
+      			  <td>{{ benne.alcProb }}</td>
+      			  <td>{{ benne.so2 }}</td>
+      			  <td>{{ benne.pourcentSO2 }}</td>
+      			  <td>{{ benne.autre1 }}</td>
+      			  <td>{{ benne.autre2 }}</td>
+      			  <td>{{ benne.meteo }}</td>
+      			  <td>{{ benne.idOperateur }}</td>
+              <td>{% for parcelle in benne.parcelles.all %}
+                {{ parcelle.nomParcelle }}
+                {% endfor %}</td>
+              <td>
+                <a href="/bennes/edit/{{ benne.id }}"><span class="badge badge-warning">Modifier</span></a>
+                <a href="/bennes/delete/{{ benne.id }}"><span class="badge badge-danger">Supprimer</span></a>
+              </td>
+            </tr>
+{% endfor %}
+          </tbody>
+        </table>
+        <!-- <nav>
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">4</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </nav> -->
+        <center><a href="create" class="btn btn-primary">Ajouter une nouvelle benne</a></center>
+      </div>
+    </div>
+  </div>
+  <!-- /.col-->
+</div>
+<!-- /.row-->
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

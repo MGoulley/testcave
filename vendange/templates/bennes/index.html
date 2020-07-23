@@ -1,0 +1,153 @@
+{% extends "layouts/base-site.html" %}
+{% load static %}
+
+{% block title %} INDEX - Bennes {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="create">
+        {% csrf_token %}
+    <div class="container-fluid">
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Creation d'une nouvelle benne</div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">N° Millesime:</span></div>
+            {{ form.idMillesime }}
+          </div>
+        </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">N° Benne:</span></div>
+              {{ form.idBenne }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Benne:</span></div>
+              <select name="idMateriel" class="form-control" id="id_idMateriel">
+                {% for benne in lesbennes %}
+                  <option value="{{benne.id}}">{{benne.nom}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Date de reception:</span></div>
+              {{ form.dateRecep }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Densite :</span></div>
+              {{ form.densite }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Temperature :</span></div>
+              {{ form.temperature }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Alcool Probable :</span></div>
+              {{ form.alcProb }}
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group col-sm-8">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">So2 :</span></div>
+                {{ form.so2 }}
+              </div>
+            </div>
+            <div class="form-group col-sm-4">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">% So2 :</span></div>
+                {{ form.pourcentSO2 }}
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Meteo :</span></div>
+              {{ form.meteo }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Autre 1 :</span></div>
+              {{ form.autre1 }}
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Autre 2 :</span></div>
+              {{ form.autre2 }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Opérateur :</span></div>
+              {{ form.idOperateur }}
+            </div>
+          </div>
+
+          <div class="form-group">
+            <div class="input-group">
+              <div class="input-group-prepend"><span class="input-group-text">Parcelles :</span></div>
+              {{form.parcelles}}
+              <table style="display: none">
+                {{ view.formset.empty_form }}
+              </table>
+      
+              <table>
+                  {{ view.formset }}
+              </table>
+            </div>
+          </div>
+          <div class="form-group form-actions">
+            <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+
+{{ form.media }}
+
+<script>
+(function($) {
+    $('#add-form').click(function() {
+        var index = $('#id_inline_test_models-TOTAL_FORMS').val()
+        var newTable = $('#id_inline_test_models-__prefix__-DELETE').parents('table').clone()
+        newTable.find(':input').each(function() {
+            for (attr of ['name', 'id'])
+                $(this).attr(
+                    attr,
+                    $(this).attr(attr).replace('__prefix__', index)
+                )
+        })
+        newTable.insertBefore($(this))
+        $('#id_inline_test_models-TOTAL_FORMS').val(
+            parseInt($('#id_inline_test_models-TOTAL_FORMS').val()) + 1
+        )
+        newTable.slideDown()
+    })
+})($)
+</script>
+{% endblock javascripts %}

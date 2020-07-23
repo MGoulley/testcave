@@ -1,13 +1,20 @@
-**Open-Source Admin Panel** coded in **Django Framework** on top of **CoreUI Dashboard** design. **Features**:
+TODO: UTILISER https://django-simple-history.readthedocs.io/en/latest/quick_start.html
 
-- SQLite, Django native ORM
-- Modular design
-- Session-Based authentication (login, register)
-- Forms validation
-- UI Kit: **CoreUI Dashboard** provided by **CoreUI** agency
 
-<br />
+## Deployer en prod :
+Update model in you dev environment
 
+python manage.py makemigrations
+
+python manage.py migrate
+
+If there were no errors in your development environment doing 1-3, commit all files (including new migrations)
+
+Deploy changes to production server
+
+From production server run `python3 manage.py migrate`
+
+If you have a staging server you can test it as step 5&6 and then run on production after. As people have said, database is locked during migrations.
 
 ## How to use it
 

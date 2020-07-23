@@ -23,17 +23,19 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'parcelles',
-    'millesimes',
-    'bennes',
-    'materiels',
-    'app'  # Enable the inner app
+    'administration',
+    'entrants',
+    'vendange',
+    'app',
+    'simple_history',
 ]
 
 MIDDLEWARE = [
@@ -42,14 +44,19 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'login_required.middleware.LoginRequiredMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
 LOGIN_REDIRECT_URL = "home"   # Route defined in app/urls.py
-LOGOUT_REDIRECT_URL = "home"  # Route defined in app/urls.py
-TEMPLATE_DIR = os.path.join(BASE_DIR, "core/templates")  # ROOT dir for templates
+LOGOUT_REDIRECT_URL = "login"  # Route defined in app/urls.py
+TEMPLATE_DIR = os.path.join(BASE_DIR, "core/templates")
+
+LOGIN_REQUIRED_IGNORE_PATHS = ['/accounts/register/',]
+LOGIN_REQUIRED_IGNORE_VIEW_NAMES = []
 
 TEMPLATES = [
     {

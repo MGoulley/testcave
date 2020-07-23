@@ -1,0 +1,60 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} INDEX - Bennes {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="create">
+        {% csrf_token %}
+    <div class="container-fluid">
+<div class="row">
+  <div class="col-sm-8">
+    <div class="card">
+      <div class="card-header">Creation d'une nouvelle organisation</div>
+      <div class="card-body">
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">Nom:</span></div>
+            {{ form.nom }}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">Adresse:</span></div>
+            {{ form.adresse }}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">N° Tel:</span></div>
+            {{ form.tel }}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">Proprietaire:</span></div>
+            {{ form.proprietaire }}
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="input-group">
+            <div class="input-group-prepend"><span class="input-group-text">Domaines:</span></div>
+            {{ form.domaines }}
+          </div>
+        </div>
+          
+          <div class="form-group form-actions">
+            <button class="btn btn-sm btn-primary" type="submit">Submit</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}
