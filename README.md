@@ -1,5 +1,9 @@
 TODO: UTILISER https://django-simple-history.readthedocs.io/en/latest/quick_start.html
 
+mgoulley : 1234
+pgoulley : )nAP-E#RnS+sY5R
+mbeurk : J68s9s.3FeBWDYX
+
 
 ## Deployer en prod :
 Update model in you dev environment
