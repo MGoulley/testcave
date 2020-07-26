@@ -13,58 +13,43 @@
           <thead>
             <tr>
               <th>N° Benne</th>
-			        <th>Benne</th>
-              <th>N° Millesime</th>
+              <th>Benne</th>
               <th>Date de reception</th>
               <th>Densite</th>
               <th>Temperature</th>
               <th>Alcool Probable</th>
-        		  <th>So2</th>
-        		  <th>% So2</th>
-        		  <th>Autre 1</th>
-        		  <th>Autre 2</th>
-        		  <th>Meteo</th>
-        		  <th>Operateur</th>
+              <th>So2</th>
+              <th>Commentaire</th>
+              <th>Meteo</th>
+              <th>Operateur</th>
               <th>Parcelles</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-{% for benne in bennes %}
+            {% for benne in bennes %}
             <tr>
               <td>{{ benne.idBenne }}</td>
-              <td>{{ benne.idMateriel }}</td>
-              <td>{{ benne.idMillesime }}</td>
+              <td>{{ benne.benne.nom }}</td>
               <td>{{ benne.dateRecep }}</td>
               <td>{{ benne.densite }}</td>
-      			  <td>{{ benne.temperature }}</td>
-      			  <td>{{ benne.alcProb }}</td>
-      			  <td>{{ benne.so2 }}</td>
-      			  <td>{{ benne.pourcentSO2 }}</td>
-      			  <td>{{ benne.autre1 }}</td>
-      			  <td>{{ benne.autre2 }}</td>
-      			  <td>{{ benne.meteo }}</td>
-      			  <td>{{ benne.idOperateur }}</td>
+              <td>{{ benne.temperature }}</td>
+              <td>{{ benne.alcProb }}</td>
+              <td>{{ benne.so2 }} à {{ benne.pourcentSO2 }} %</td>
+              <td>{{ benne.commentaire }}</td>
+              <td>{{ benne.meteo }}</td>
+              <td>{{ benne.operateur }}</td>
               <td>{% for parcelle in benne.parcelles.all %}
-                {{ parcelle.nomParcelle }}
+                {{ parcelle.nomParcelle }}</br>
                 {% endfor %}</td>
               <td>
-                <a href="/bennes/edit/{{ benne.id }}"><span class="badge badge-warning">Modifier</span></a>
-                <a href="/bennes/delete/{{ benne.id }}"><span class="badge badge-danger">Supprimer</span></a>
+                <a href="edit/{{ benne.id }}"><span class="badge badge-warning">Modifier</span></a>
+                <a href="delete/{{ benne.id }}"><span class="badge badge-danger">Supprimer</span></a>
               </td>
             </tr>
-{% endfor %}
+            {% endfor %}
           </tbody>
         </table>
-        <!-- <nav>
-          <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Prev</a></li>
-            <li class="page-item active"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">4</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-          </ul>
-        </nav> -->
         <center><a href="create" class="btn btn-primary">Ajouter une nouvelle benne</a></center>
       </div>
     </div>

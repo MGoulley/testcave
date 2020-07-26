@@ -9,33 +9,24 @@ from administration.models import Domaine
 # PARCELLE
 class ParcelleAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        # Don't forget to filter out results depending on the visitor !
-        print("Here")
         if not self.request.user.is_authenticated:
             return Parcelle.objects.none()
 
         qs = Parcelle.objects.all()
-        print(qs)
         if self.q:
-            qs = qs.filter(nomParcelle__istartswith=self.q)
-        print(qs)
+            qs = qs.filter(nomParcelle__icontains=self.q)
         return qs
 
 def parcelle_create(request):
-    data = Parcelle.objects.all()
     domaines = Organisation.objects.get(pk=request.session.get('organisation_id')).domaines.all()
     if request.method == "POST":
         post = request.POST.copy()
-        print(post)      
-        print("Save ?")
         parcelle = Parcelle.objects.create(numIlot = post["numIlot"], nomParcelle = post["nomParcelle"], 
                     appellation = post["appellation"], commune = post["commune"], refCadastre = post["refCadastre"], 
                     anneesPlantation = post["anneesPlantation"], datebio = post["datebio"])
         for i in range(len(post.getlist("domaine"))):
-            print(i)
             parcelleEtendue = ParcelleEtendue(domaine=Domaine.objects.get(pk=post.getlist("domaine")[i]), parcelle=parcelle, proprietaire=post.getlist("proprietaire")[i], surface=post.getlist("surface")[i])
             parcelleEtendue.save()
-        print("Saved")
         return redirect("/entrants/parcelles/show")
     form = ParcelleForm()
     return render(request,'parcelles/index.html',{'form':form, "domaines": domaines})
@@ -43,23 +34,27 @@ def parcelle_create(request):
 
 def parcelle_show(request):
     data = Parcelle.objects.all()
-    domaines = Domaine.objects.all()
-    print(data.model.__dict__)
-    return render(request,"parcelles/show.html",{'data':data, "domaines": domaines})
+    return render(request,"parcelles/show.html",{'data':data})
 
 
 def parcelle_edit(request, id):
     parcelle = Parcelle.objects.get(pk=id)
-    return render(request,'parcelles/edit.html', {'parcelle':parcelle})
+    form = ParcelleForm(request.POST or None, instance=parcelle)
+    domaines = Organisation.objects.get(pk=request.session.get('organisation_id')).domaines.all()
+    return render(request,'parcelles/edit.html', {'parcelle': parcelle, 'props':parcelle.parcelleetendue_set.all(), 'form': form, 'domaines': domaines})
 
 
 def parcelle_update(request, id):
+    post = request.POST.copy()
     parcelle = Parcelle.objects.get(pk=id)
-    form = ParcelleForm(request.POST, instance = parcelle)
-    if form.is_valid():
-        form.save()
-        return redirect("/entrants/parcelles/show")
-    return render(request, 'parcelles/edit.html', {'parcelles': parcelle})
+    Parcelle.objects.filter(pk=id).update(numIlot = post["numIlot"], nomParcelle = post["nomParcelle"], 
+                    appellation = post["appellation"], commune = post["commune"], refCadastre = post["refCadastre"], 
+                    anneesPlantation = post["anneesPlantation"], datebio = post["datebio"])
+    parcelle.domaines.clear()
+    for i in range(len(post.getlist("domaine"))):
+        parcelleEtendue = ParcelleEtendue(domaine=Domaine.objects.get(pk=post.getlist("domaine")[i]), parcelle=parcelle, proprietaire=post.getlist("proprietaire")[i], surface=post.getlist("surface")[i])
+        parcelleEtendue.save()
+    return redirect("/entrants/parcelles/show")
 
 
 def parcelle_destroy(request, id):

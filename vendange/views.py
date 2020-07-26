@@ -3,87 +3,89 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from .models import *
+import datetime
 from dal import autocomplete
 from entrants.models import Parcelle
 from entrants.models import Materiels
+from administration.models import Domaine
 from django.utils.timezone import now
+from django.db.models import Max
+import bs4
 
 # BENNE
 
 def benne_create(request):
-    bennes = Materiels.objects.filter(type="BENNE").all()
+    bennes = Materiels.objects.filter(orga=request.session.get('organisation_id'), type="BENNE").all()
     if request.method == "POST":
         post = request.POST.copy()
-        print(post)
-        parcelles = [Parcelle.objects.get(nomParcelle=nomParcelle) for nomParcelle in request.POST.getlist("parcelles")]
-        print(parcelles)
-        #post.setlist("parcelles", [Parcelle.objects.get(nomParcelle=nomParcelle) for nomParcelle in request.POST.getlist("parcelles")])
-        request.POST = post
-        form = BenneForm(request.POST)
-        #print(form)
-        if form.is_valid():
-            try:
-                print("Save ?")
-                form.save()
-                print("Saved")
-                return redirect("/vendange/bennes/show")
-            except:
-                pass
+        post['millesime'] = Millesime.objects.get(annee=request.session['millesime'])
+        parcelles = [Parcelle.objects.filter(domaines__in = Organisation.objects.get(pk=request.session.get('organisation_id')).domaines.all(), nomParcelle=nomParcelle) for nomParcelle in request.POST.getlist("parcelles")]
+        benne = Benne.objects.create(orga = Organisation.objects.get(pk=request.session.get('organisation_id')), millesime = Millesime.objects.get(annee=request.session['millesime']), operateur = request.user, benne = Materiels.objects.get(pk=post['idMateriel']),
+            idBenne = post['idBenne'], dateRecep = datetime.datetime.strptime(post['dateRecep'], '%m/%d/%Y %H:%M'), densite = post['densite'],
+            temperature = post['temperature'], alcProb = post['alcProb'], so2 = post['so2'], commentaire = post['commentaire'],
+            meteo = post['meteo'], pourcentSO2 = post['pourcentSO2'])
+
+        for parcelle in parcelles:
+            benne.parcelles.add(parcelle)
+        return redirect("/vendange/bennes/show")
+
     else:
         form = BenneForm()
-        form.fields['idMillesime'].initial = request.session['millesime']
-        form.fields['idBenne'].initial = Benne.objects.filter(idMillesime=request.session['millesime']).count() + 1
-    print(form)
+        form.fields['millesime'].initial = request.session['millesime']
+        form.fields['idBenne'].initial = Benne.objects.filter(millesime=request.session['millesime']).aggregate(Max('idBenne'))['idBenne__max'] + 1
     return render(request,'bennes/index.html',{'form':form, 'lesbennes': bennes})
 
 def benne_show(request):
-    bennes = Benne.objects.all()
-    parcelles = Parcelle.objects.all()
-    return render(request,"bennes/show.html",{'bennes':bennes, 'lesparcelles':parcelles})
-
+    bennes = Benne.objects.filter(orga=request.session.get('organisation_id'), millesime=Millesime.objects.get(annee=request.session['millesime']))
+    return render(request,"bennes/show.html",{'bennes':bennes})
 
 def benne_edit(request, id):
     benne = Benne.objects.get(id=id)
-    parcelles = Parcelle.objects.all()
+    form = BenneForm(request.POST or None, instance=benne)
+    form.fields['parcelles'].to_field_name="nomParcelle"
     benne.dateRecep = benne.dateRecep.strftime('%m/%d/%Y %H:%M')
-    return render(request,'bennes/edit.html', {'benne':benne, 'lesparcelles': parcelles})
+    bennes = Materiels.objects.filter(orga=request.session.get('organisation_id'), type="BENNE").all()
+    return render(request,'bennes/edit.html', {'benne':benne, 'lesbennes': bennes, 'form': form})
 
 
 def benne_update(request, id):
-    benne = Benne.objects.get(id=id)
+    post = request.POST.copy()
+    print(post)
+    print(Materiels.objects.all())
+    print(Materiels.objects.get(pk=post['idMateriel']))
+    benne = Benne.objects.filter(pk=id).update(benne = Materiels.objects.get(pk=post['idMateriel']),
+            idBenne = post['idBenne'], dateRecep = datetime.datetime.strptime(post['dateRecep'], '%m/%d/%Y %H:%M'), densite = post['densite'],
+            temperature = post['temperature'], alcProb = post['alcProb'], so2 = post['so2'], commentaire = post['commentaire'],
+            meteo = post['meteo'], pourcentSO2 = post['pourcentSO2'])
+
+    benne.parcelles.clear()
+    for parcelle in post.getlist("parcelles"):
+        #parcelle = Parcelle.domaines.filter(domaine__in=)
+        parcelleEtendue = ParcelleEtendue(domaine=Domaine.objects.get(pk=post.getlist("domaine")[i]), parcelle=parcelle, proprietaire=post.getlist("proprietaire")[i], surface=post.getlist("surface")[i])
+        parcelleEtendue.save()
+        benne.parcelles.add(parcelle)
+    return render(request, 'bennes/edit.html', {'benne': benne, 'lesparcelles': parcelles})
+
+"""     benne = Benne.objects.get(id=id)
     parcelles = Parcelle.objects.all()
     post = request.POST.copy()
-    post.setlist("parcelles", [Parcelle.objects.get(numIlot=numIlot) for numIlot in request.POST.getlist("parcelles")])
+    post.setlist("parcelles", [Parcelle.objects.filter(domaines__in= ,nomParcelle=nomParcelle) for nomParcelle in request.POST.getlist("parcelles")])
     request.POST = post
     form = BenneForm(request.POST, instance=benne)
     if form.is_valid():
         form.save()
-        return redirect("/bennes/show")
+        return redirect("/vendange/bennes/show")
     else:
-        benne = Benne.objects.get(id=id)
-    return render(request, 'bennes/edit.html', {'benne': benne, 'lesparcelles': parcelles})
+        benne = Benne.objects.get(id=id) """
+    
 
 
 def benne_destroy(request, id):
     benne = Benne.objects.get(id=id)
     benne.delete()
-    return redirect("/bennes/show")
-
-
-def benne_reset(request):
-    Benne.objects.all().delete()
-    # benne=Benne(idBenne=1, idMillesime=2021, dateRecep="2020-02-27 22:32", densite=20.8, temperature=10.2, alcProb=20.0, so2=0.25, autre1="", autre2="", meteo="AAA", pourcentSO2=0.321, idOperateur=1, idMateriel=1)
-    # benne.save()
-    # benne.parcelles.add(Parcelle.objects.all()[0])
-    # benne.save()
-    return redirect("/bennes/show")
-
-
-
+    return redirect("/vendange/bennes/show")
 
 # MARCS
-
-
 def marcs_create(request):
     parcelles = Parcelle.objects.all()
     bennes = Materiels.objects.filter(type="BENNE").all()

@@ -25,9 +25,6 @@ class Benne(models.Model):
     class Meta:
         db_table = "benne"
 
-    def __str__(self):
-        return '-'.join([str(i) for i in self.parcelles.all().values_list('nomParcelle', flat=True)])
-
 class Marc(models.Model):
     orga = models.ForeignKey(Organisation, on_delete=models.CASCADE)
     millesime = models.ForeignKey(Millesime, on_delete=models.CASCADE)

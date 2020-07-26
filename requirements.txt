@@ -13,3 +13,4 @@ django-viewflow
 django-login-required-middleware
 django-autocomplete-light
 django-simple-history
+bs4

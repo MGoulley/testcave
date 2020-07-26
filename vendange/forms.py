@@ -9,9 +9,9 @@ from django.utils.timezone import now
 TIME_ZONE = 'Europe/London'
 
 METEO_CHOICES = [
-    ('EMPTY', 'Beau Temps'),
-    ('INCOMPLETE', 'Pas beau'),
-    ('COMPLETE', 'Neige'),
+    ('BEAU TEMPS', 'Beau Temps'),
+    ('MAUVAIS TEMPS', 'Pas beau'),
+    ('NEIGE', 'Neige'),
 ]
 
 def build_thing(value):
@@ -26,7 +26,7 @@ class BenneForm(forms.ModelForm):
             "parcelles" : autocomplete.TagSelect2(url='parcelle-autocomplete', attrs={
         'class': "form-control",
         'data-html': True,
-        'data-placeholder': 'Autocomplete ...',
+        'data-placeholder': 'Autocompletion ...',
         'data-minimum-input-length': 1,
             }),
         }
@@ -37,7 +37,7 @@ class BenneForm(forms.ModelForm):
             'class': "form-control"
         }
     ))
-    idMillesime = forms.IntegerField(initial='0000000', widget=forms.TextInput(
+    millesime = forms.IntegerField(initial='0000000', disabled=True, widget=forms.TextInput(
         attrs={
             'class': "form-control"
         }
@@ -69,12 +69,7 @@ class BenneForm(forms.ModelForm):
             'class': "form-control"
         }
     ))
-    autre1 = forms.CharField(required=False, widget=forms.TextInput(
-        attrs={
-            'class': "form-control"
-        }
-    ))
-    autre2 = forms.CharField(required=False, widget=forms.TextInput(
+    commentaire = forms.CharField(required=False, widget=forms.TextInput(
         attrs={
             'class': "form-control"
         }
@@ -85,11 +80,6 @@ class BenneForm(forms.ModelForm):
         }
     ))
     pourcentSO2 = forms.FloatField(widget=forms.NumberInput(
-        attrs={
-            'class': "form-control"
-        }
-    ))
-    idOperateur = forms.IntegerField(widget=forms.TextInput(
         attrs={
             'class': "form-control"
         }

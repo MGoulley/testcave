@@ -1,4 +1,11 @@
-TODO: UTILISER https://django-simple-history.readthedocs.io/en/latest/quick_start.html
+TODO: 
+    UTILISER https://django-simple-history.readthedocs.io/en/latest/quick_start.html
+    HTTPS: https://www.youtube.com/watch?v=NhidVhNHfeU
+
+
+For existing projects, you can call the populate command to generate an initial change for preexisting model instances:
+
+$ python manage.py populate_history --auto
 
 mgoulley : 1234
 pgoulley : )nAP-E#RnS+sY5R
