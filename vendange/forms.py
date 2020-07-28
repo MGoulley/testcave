@@ -89,4 +89,31 @@ class BenneForm(forms.ModelForm):
             'class': "form-control"
         }
     ))
+
+
+class MarcForm(forms.ModelForm):
+    class Meta:
+        model = Marc
+        fields = '__all__'
+
+    millesime = forms.IntegerField(initial='0000000', disabled=True, widget=forms.TextInput(
+        attrs={
+            'class': "form-control"
+        }
+    ))
+    idMarc = forms.IntegerField(widget=forms.TextInput(
+        attrs={
+            'class': "form-control"
+        }
+    ))
+    volumeMarc = forms.FloatField(widget=forms.NumberInput(
+        attrs={
+            'class': "form-control"
+        }
+    ))
+    pressoire = forms.IntegerField(widget=forms.TextInput(
+        attrs={
+            'class': "form-control"
+        }
+    ))
     

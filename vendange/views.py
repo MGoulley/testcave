@@ -26,7 +26,7 @@ def benne_create(request):
             meteo = post['meteo'], pourcentSO2 = post['pourcentSO2'])
 
         for parcelle in parcelles:
-            benne.parcelles.add(parcelle)
+            benne.parcelles.add(parcelle[0].id)
         return redirect("/vendange/bennes/show")
 
     else:
@@ -50,35 +50,42 @@ def benne_edit(request, id):
 
 def benne_update(request, id):
     post = request.POST.copy()
-    print(post)
-    print(Materiels.objects.all())
-    print(Materiels.objects.get(pk=post['idMateriel']))
-    benne = Benne.objects.filter(pk=id).update(benne = Materiels.objects.get(pk=post['idMateriel']),
-            idBenne = post['idBenne'], dateRecep = datetime.datetime.strptime(post['dateRecep'], '%m/%d/%Y %H:%M'), densite = post['densite'],
-            temperature = post['temperature'], alcProb = post['alcProb'], so2 = post['so2'], commentaire = post['commentaire'],
-            meteo = post['meteo'], pourcentSO2 = post['pourcentSO2'])
+    benne = Benne.objects.get(pk=id)
+    Benne.objects.filter(pk=id).update(benne = Materiels.objects.get(
+        pk=post['idMateriel']),
+        idBenne = post['idBenne'], 
+        dateRecep = datetime.datetime.strptime(post['dateRecep'],'%m/%d/%Y %H:%M'), 
+        densite = post['densite'],
+        temperature = post['temperature'], 
+        alcProb = post['alcProb'], 
+        so2 = post['so2'], 
+        commentaire = post['commentaire'],
+        meteo = post['meteo'], 
+        pourcentSO2 = post['pourcentSO2'])
+    benne.parcelles.clear() 
+    for parcelle in [Parcelle.objects.filter(domaines__in=Organisation.objects.get(pk=request.session.get('organisation_id')).domaines.all() ,nomParcelle=nomParcelle) for nomParcelle in request.POST.getlist("parcelles")]:
+        benne.parcelles.add(parcelle[0].id)
+    return redirect("/vendange/bennes/show")
 
-    benne.parcelles.clear()
-    for parcelle in post.getlist("parcelles"):
-        #parcelle = Parcelle.domaines.filter(domaine__in=)
-        parcelleEtendue = ParcelleEtendue(domaine=Domaine.objects.get(pk=post.getlist("domaine")[i]), parcelle=parcelle, proprietaire=post.getlist("proprietaire")[i], surface=post.getlist("surface")[i])
-        parcelleEtendue.save()
-        benne.parcelles.add(parcelle)
-    return render(request, 'bennes/edit.html', {'benne': benne, 'lesparcelles': parcelles})
-
-"""     benne = Benne.objects.get(id=id)
-    parcelles = Parcelle.objects.all()
-    post = request.POST.copy()
-    post.setlist("parcelles", [Parcelle.objects.filter(domaines__in= ,nomParcelle=nomParcelle) for nomParcelle in request.POST.getlist("parcelles")])
-    request.POST = post
-    form = BenneForm(request.POST, instance=benne)
-    if form.is_valid():
-        form.save()
+    """ try:
+        benne = Benne.objects.get(pk=id)
+        Benne.objects.filter(pk=id).update(benne = Materiels.objects.get(
+            pk=post['idMateriel']),
+            idBenne = post['idBenne'], 
+            dateRecep = strptime(post['dateRecep'], '%m/%d/%Y %H:%M'), 
+            densite = post['densite'],
+            temperature = post['temperature'], 
+            alcProb = post['alcProb'], 
+            so2 = post['so2'], 
+            commentaire = post['commentaire'],
+            meteo = post['meteo'], 
+            pourcentSO2 = post['pourcentSO2'])
+        benne.parcelles.clear() 
+        for parcelle in [Parcelle.objects.get(domaines__in=Organisation.objects.get(pk=request.session.get('organisation_id')).domaines.all() ,nomParcelle=nomParcelle) for nomParcelle in request.POST.getlist("parcelles")]:
+            benne.parcelles.add(parcelle.id)
         return redirect("/vendange/bennes/show")
-    else:
-        benne = Benne.objects.get(id=id) """
-    
-
+    except:
+        return redirect("/vendange/bennes/edit/" + str(id)) """
 
 def benne_destroy(request, id):
     benne = Benne.objects.get(id=id)
@@ -87,30 +94,27 @@ def benne_destroy(request, id):
 
 # MARCS
 def marcs_create(request):
-    parcelles = Parcelle.objects.all()
-    bennes = Materiels.objects.filter(type="BENNE").all()
+    pressoires = Materiels.objects.filter(type="PRESSOIRE").all()
     if request.method == "POST":
         post = request.POST.copy()
-        post.setlist("parcelles", [Parcelle.objects.get(numIlot=numIlot) for numIlot in request.POST.getlist("parcelles")])
-        request.POST = post
-        form = BenneForm(request.POST)
+
+        form = MarcForm(post)
         if form.is_valid():
             try:
                 form.save()
-                return redirect("/bennes/show")
+                return redirect("/marcs/show")
             except:
                 pass
     else:
-        form = BenneForm()
-        form.fields['idMillesime'].initial = request.session['millesime']
-        form.fields['idBenne'].initial = Benne.objects.filter(idMillesime=request.session['millesime']).count() + 1
-    return render(request,'bennes/index.html',{'form':form, 'lesparcelles': parcelles, 'lesbennes': bennes})
+        form = MarcForm()
+        form.fields['millesime'].initial = request.session['millesime']
+        form.fields['idMarc'].initial = Marc.objects.filter(millesime=request.session['millesime']).count() + 1
+    return render(request,'marcs/index.html',{'form':form, 'lespressoires': pressoires})
 
 
 def marcs_show(request):
-    bennes = Benne.objects.all()
-    parcelles = Parcelle.objects.all()
-    return render(request,"bennes/show.html",{'bennes':bennes, 'lesparcelles':parcelles})
+    data = Marc.objects.all()
+    return render(request,"marcs/show.html",{'data':data})
 
 
 def marcs_edit(request, id):

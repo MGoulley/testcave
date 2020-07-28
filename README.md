@@ -1,7 +1,7 @@
 TODO: 
     UTILISER https://django-simple-history.readthedocs.io/en/latest/quick_start.html
     HTTPS: https://www.youtube.com/watch?v=NhidVhNHfeU
-
+    ASYNC: https://stackoverflow.com/questions/17601698/can-django-do-multi-thread-works
 
 For existing projects, you can call the populate command to generate an initial change for preexisting model instances:
 

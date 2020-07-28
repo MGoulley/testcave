@@ -66,6 +66,7 @@ def parcelle_destroy(request, id):
 # MATERIEL
 def materiel_create(request):
     if request.method == "POST":
+        print(request.POST)
         form = MaterielsForm(request.POST)
         if form.is_valid():
             try:
