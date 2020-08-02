@@ -62,10 +62,10 @@
       </div>
 
       <div class="col-sm-4">
-          {% for prop in props %}
-            {% if forloop.first %}
-              <div id="duplicater">
-            {% endif %}
+        {% for prop in props %}
+        {% if forloop.first %}
+        <div id="duplicater">
+          {% endif %}
           <div class="card">
             <div class="card-header">Proprietaire</div>
             <div class="card-body">
@@ -98,18 +98,18 @@
             </div>
           </div>
           {% if forloop.first %}
-            </div>
-          {% endif %}
-        {% endfor %}
-      <div class="card" id="card-button">
-        <div class="card-body">
-          <button class="btn btn-outline-success btn-lg btn-block" onclick="duplicate()" type="button">+ Ajouter un
-            nouveau propriétaire</button>
         </div>
+        {% endif %}
+        {% endfor %}
+        <div class="card" id="card-button">
+          <div class="card-body">
+            <button class="btn btn-outline-success btn-lg btn-block" onclick="duplicate()" type="button">+ Ajouter un
+              nouveau propriétaire</button>
+          </div>
 
+        </div>
       </div>
     </div>
-  </div>
 </form>
 
 {% endblock content %}
@@ -130,7 +130,7 @@
         break;
       }
     }
-    
+
     var card_body_node = null;
     for (var i = 0; i < card_node.childNodes.length; i++) {
       if (card_node.childNodes[i].className == "card-body") {

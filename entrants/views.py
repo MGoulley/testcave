@@ -66,14 +66,13 @@ def parcelle_destroy(request, id):
 # MATERIEL
 def materiel_create(request):
     if request.method == "POST":
-        print(request.POST)
-        form = MaterielsForm(request.POST)
-        if form.is_valid():
-            try:
-                form.save()
-                return redirect("/entrants/materiels/show")
-            except:
-                pass
+        post = request.POST
+        try:
+            Materiels.objects.create(nom = post["nom"], type = post["type"], orga = Organisation.objects.get(pk=request.session.get('organisation_id')))
+            return redirect("/entrants/materiels/show")
+        except:
+            form = MaterielsForm(post)
+            pass
     else:
         form = MaterielsForm()
     return render(request,'materiels/index.html',{'form':form})

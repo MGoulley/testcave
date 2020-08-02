@@ -116,4 +116,9 @@ class MarcForm(forms.ModelForm):
             'class': "form-control"
         }
     ))
+    volBenne = forms.FloatField(initial='100', widget=forms.TextInput(
+        attrs={
+            'class': "form-control"
+        }
+    ))
     

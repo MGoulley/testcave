@@ -13,27 +13,30 @@
           <thead>
             <tr>
               <th>N° Marc</th>
-			        <th>Volume</th>
-              <th>Pressoire</th>
+              <th>Volume</th>
+              <th>Pressoir</th>
               <th>Bennes</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-{% for row in data %}
+            {% for row in data %}
             <tr>
               <td>{{ row.idMarc }}</td>
               <td>{{ row.volumeMarc }}</td>
               <td>{{ row.pressoire }}</td>
-              <td>{% for benne in row.bennes.all %}
-                {{ benne.idBenne }}
+              
+              <td>{% for labenne in row.bennesmarc_set.all %}
+                {{ labenne.volBenne }} % de la benne "{{ labenne.benne.benne.nom}}" N°{{ labenne.benne.idBenne }} </br> {% for parcelle in labenne.benne.parcelles.all %}
+                -   {{ parcelle.nomParcelle }}</br>
+                {% endfor %}
                 {% endfor %}</td>
               <td>
                 <a href="edit/{{ row.id }}"><span class="badge badge-warning">Modifier</span></a>
                 <a href="delete/{{ row.id }}"><span class="badge badge-danger">Supprimer</span></a>
               </td>
             </tr>
-{% endfor %}
+            {% endfor %}
           </tbody>
         </table>
         <center><a href="create" class="btn btn-primary">Ajouter un nouveau marc</a></center>
