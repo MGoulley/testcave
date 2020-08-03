@@ -7,16 +7,22 @@
 <div class="row">
   <div class="col-lg-12">
     <div class="card">
-      <div class="card-header"><i class="fa fa-align-justify"></i> Liste des marcs</div>
+      <div class="card-header">Liste des marcs<div class="card-header-actions"><button class="btn btn-primary"
+            type="button" id="button" onclick="printData()">
+            <svg class="c-icon">
+              <use xlink:href="/static/assets/vendors/@coreui/icons/svg/free.svg#cil-cloud-download"></use>
+            </svg>
+          </button></div>
+      </div>
       <div class="card-body">
-        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+        <table class="table table-responsive-sm table-bordered table-striped table-sm" id="printTable">
           <thead>
             <tr>
               <th>N° Marc</th>
               <th>Volume</th>
               <th>Pressoir</th>
               <th>Bennes</th>
-              <th>Actions</th>
+              <th class="actions">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -25,10 +31,11 @@
               <td>{{ row.idMarc }}</td>
               <td>{{ row.volumeMarc }}</td>
               <td>{{ row.pressoire }}</td>
-              
+
               <td>{% for labenne in row.bennesmarc_set.all %}
-                {{ labenne.volBenne }} % de la benne "{{ labenne.benne.benne.nom}}" N°{{ labenne.benne.idBenne }} </br> {% for parcelle in labenne.benne.parcelles.all %}
-                -   {{ parcelle.nomParcelle }}</br>
+                {{ labenne.volBenne }} % de la benne "{{ labenne.benne.benne.nom}}" N°{{ labenne.benne.idBenne }} </br>
+                {% for parcelle in labenne.benne.parcelles.all %}
+                - {{ parcelle.nomParcelle }} ({{ parcelle.appellation }})</br>
                 {% endfor %}
                 {% endfor %}</td>
               <td>
@@ -49,5 +56,4 @@
 {% endblock content %}
 
 {% block javascripts %}
-<!-- Specific Page JS goes HERE  -->
 {% endblock javascripts %}
