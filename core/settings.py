@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'vendange',
     'app',
     'simple_history',
+    'cave',
 ]
 
 MIDDLEWARE = [

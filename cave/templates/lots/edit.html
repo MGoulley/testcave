@@ -1,0 +1,125 @@
+{% extends "layouts/base-site.html" %}
+
+{% load common_tags %}
+
+{% block title %} EDIT - Lots {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="/cave/lots/update/{{ lot.id }}">
+  {% csrf_token %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-header">Mise à jour du lot {{ lot.nom }}</div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Nom du lot :</span></div>
+                {{ form.nom }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Volume :</span></div>
+                {{ form.volume }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Date de création :</span></div>
+                {{ form.dateCreation }}
+              </div>
+            </div>
+            <div class="form-group form-actions">
+              <button class="btn btn-sm btn-primary" type="submit">Envoyer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+      {% for marc in lot.marcslots_set.all %}
+        {% if forloop.first %}
+        <div id="duplicater">
+          {% endif %}
+          <div class="card">
+            <div class="card-header">Marc</div>
+            <div class="card-body">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Marc :</span></div>
+                  <select name="marcs" class="form-control">
+                    <option disabled hidden>--</option>
+                    {% for marcl in marcs %}
+                    <option value="{{marcl.idMarc}}" {% if marcl.idMarc == marc.marc.idMarc %} selected{% endif %}>
+                      {{marcl.idMarc}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Volume :</span></div>
+                  <input class="form-control" type="text" name="volumes" value="{{ marc.volume|asfloat }}">
+                </div>
+              </div>
+              {% if not forloop.first %}
+              <button class="btn btn-sm btn-danger" onclick="remove(this)" type="button">Retirer</button>
+              {% endif %}
+            </div>
+          </div>
+          {% if forloop.first %}
+        </div>
+        {% endif %}
+      {% endfor %}
+        <div class="card" id="card-button">
+          <div class="card-body">
+            <button class="btn btn-outline-success btn-lg btn-block" onclick="duplicate()" type="button">+ Ajouter un
+              nouveau marc</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+  var index = 1;
+  var original = document.getElementById('duplicater');
+
+  function duplicate() {
+    var d1 = document.getElementById('card-button');
+    var clone = original.cloneNode(true);
+    clone.id = "duplicater" + ++index;
+    var card_node = null;
+    for (var i = 0; i < clone.childNodes.length; i++) {
+      if (clone.childNodes[i].className == "card") {
+        card_node = clone.childNodes[i];
+        break;
+      }
+    }
+
+    var card_body_node = null;
+    for (var i = 0; i < card_node.childNodes.length; i++) {
+      if (card_node.childNodes[i].className == "card-body") {
+        card_body_node = card_node.childNodes[i];
+        break;
+      }
+    }
+
+
+    card_body_node.innerHTML += "<button class=\"btn btn-sm btn-danger\" type=\"button\" onclick=\"remove(this)\" >Retirer</button>";
+    d1.insertAdjacentHTML('beforebegin', clone.innerHTML);
+  }
+
+  function remove(clicked_id) {
+    var el = clicked_id.parentNode.parentNode;
+    el.remove();
+  }
+</script>
+{% endblock javascripts %}

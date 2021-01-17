@@ -1,0 +1,152 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} EDIT - Parcelles {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="/entrants/parcelles/update/{{ parcelle.id }}">
+  {% csrf_token %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-header">Mise à jour de la parcelle {{ parcelle.nomParcelle }}</div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Numéro d'ilot :</span></div>
+                {{ form.numIlot }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Nom de parcelle :</span></div>
+                {{ form.nomParcelle }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Appellation :</span></div>
+                {{ form.appellation }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Commune :</span></div>
+                {{ form.commune }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Ref Cadastre :</span></div>
+                {{ form.refCadastre }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Annee de Plantation :</span></div>
+                {{ form.anneesPlantation }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Date BIO :</span></div>
+                {{ form.datebio }}
+              </div>
+            </div>
+            <div class="form-group form-actions">
+              <button class="btn btn-sm btn-primary" type="submit">Envoyer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        {% for prop in props %}
+        {% if forloop.first %}
+        <div id="duplicater">
+          {% endif %}
+          <div class="card">
+            <div class="card-header">Proprietaire</div>
+            <div class="card-body">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Domaine :</span></div>
+                  <select name="domaine" class="form-control">
+                    {% for domaine in domaines %}
+                    <option value="{{domaine.id}}" {% if domaine.id == prop.domaine_id %} selected{% endif %}>
+                      {{domaine.nom}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Proprietaire :</span></div>
+                  <input class="form-control" type="text" name="proprietaire" value="{{ prop.proprietaire }}">
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Surface :</span></div>
+                  <input class="form-control" type="text" name="surface" value="{{ prop.surface }}">
+                </div>
+              </div>
+              {% if not forloop.first %}
+              <button class="btn btn-sm btn-danger" onclick="remove(this)" type="button">Retirer</button>
+              {% endif %}
+            </div>
+          </div>
+          {% if forloop.first %}
+        </div>
+        {% endif %}
+        {% endfor %}
+        <div class="card" id="card-button">
+          <div class="card-body">
+            <button class="btn btn-outline-success btn-lg btn-block" onclick="duplicate()" type="button">+ Ajouter un
+              nouveau propriétaire</button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+  var index = 1;
+  var original = document.getElementById('duplicater');
+
+  function duplicate() {
+    var d1 = document.getElementById('card-button');
+    var clone = original.cloneNode(true);
+    clone.id = "duplicater" + ++index;
+    var card_node = null;
+    for (var i = 0; i < clone.childNodes.length; i++) {
+      if (clone.childNodes[i].className == "card") {
+        card_node = clone.childNodes[i];
+        break;
+      }
+    }
+
+    var card_body_node = null;
+    for (var i = 0; i < card_node.childNodes.length; i++) {
+      if (card_node.childNodes[i].className == "card-body") {
+        card_body_node = card_node.childNodes[i];
+        break;
+      }
+    }
+
+
+    card_body_node.innerHTML += "<button class=\"btn btn-sm btn-danger\" type=\"button\" onclick=\"remove(this)\" >Retirer</button>";
+    d1.insertAdjacentHTML('beforebegin', clone.innerHTML);
+  }
+
+  function remove(clicked_id) {
+    var el = clicked_id.parentNode.parentNode;
+    el.remove();
+  }
+</script>
+{% endblock javascripts %}

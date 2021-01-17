@@ -1,0 +1,139 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} INDEX - Parcelles {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="create">
+  {% csrf_token %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-header">Creation d'une nouvelle parcelle</div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Numéro d'ilot :</span></div>
+                {{ form.numIlot }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Nom de parcelle :</span></div>
+                {{ form.nomParcelle }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Appellation :</span></div>
+                {{ form.appellation }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Commune :</span></div>
+                {{ form.commune }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Ref Cadastre :</span></div>
+                {{ form.refCadastre }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Annee de Plantation :</span></div>
+                {{ form.anneesPlantation }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Date BIO :</span></div>
+                {{ form.datebio }}
+              </div>
+            </div>
+            <div class="form-group form-actions">
+              <button class="btn btn-sm btn-primary" type="submit">Envoyer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div id="duplicater">
+          <div class="card">
+            <div class="card-header">Proprietaire</div>
+            <div class="card-body">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Domaine :</span></div>
+                  <select name="domaine" class="form-control" id="domaine">
+                    {% for domaine in domaines %}
+                    <option value="{{domaine.id}}">{{domaine.nom}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Proprietaire :</span></div>
+                  {{ form.proprietaire }}
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Surface :</span></div>
+                  {{ form.surface }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card" id="card-button">
+          <div class="card-body">
+            <button class="btn btn-outline-success btn-lg btn-block" onclick="duplicate()" type="button">+ Ajouter un nouveau propriétaire</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+  var index = 1;
+  var original = document.getElementById('duplicater');
+
+  function duplicate() {
+    var d1 = document.getElementById('card-button');
+    var clone = original.cloneNode(true);
+    clone.id = "duplicater" + ++index;
+    var card_node = null;
+    for (var i = 0; i < clone.childNodes.length; i++) {
+        if (clone.childNodes[i].className == "card") {
+          card_node = clone.childNodes[i];
+          break;
+        }        
+    }
+    var card_body_node = null;
+    for (var i = 0; i < card_node.childNodes.length; i++) {
+        if (card_node.childNodes[i].className == "card-body") {
+          card_body_node = card_node.childNodes[i];
+          break;
+        }        
+    }
+    
+    card_body_node.innerHTML += "<div class=\"form-group form-actions\"><button class=\"btn btn-sm btn-danger\" id=\"div-"+ index +"\" onclick=\"remove(this.id)\" >Retirer</button></div>";
+    d1.insertAdjacentHTML('beforebegin', clone.innerHTML);
+  }
+
+  function remove(clicked_id) {
+    var el = document.getElementById(clicked_id).parentNode.parentNode.parentNode;
+    el.remove();
+  }
+</script>
+{% endblock javascripts %}

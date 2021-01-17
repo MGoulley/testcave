@@ -1,0 +1,48 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} SHOW - Lots {% endblock %}
+
+{% block content %}
+
+<div class="row">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-header"><i class="fa fa-align-justify"></i>Liste des lots</div>
+      <div class="card-body">
+        <table class="table table-responsive-sm table-bordered table-striped table-sm">
+          <thead>
+            <tr>
+              <th>Lot</th>
+              <th>Volume</th>
+              <th>Marcs</th>
+              <th>Date Creation</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for lot in data %}
+            <tr>
+              <td>{{ lot.nom }}</td>
+              <td>{{ lot.volume }} hL</td>
+              <td>{% for marc in lot.marcslots_set.all %}Marc {{ marc.marc.idMarc }}, volume {{ marc.volume }} hL</br>{% endfor %}</td>
+              <td>{{ lot.dateCreation }}</td>
+              <td>
+                <a href="edit/{{ lot.id }}"><span class="badge badge-warning">Modifier</span></a>
+                <a href="delete/{{ lot.id }}"><span class="badge badge-danger">Supprimer</span></a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+        <center><a href="create" class="btn btn-primary">Ajouter un nouveau lot</a></center>
+      </div>
+    </div>
+  </div>
+  <!-- /.col-->
+</div>
+<!-- /.row-->
+{% endblock content %}
+
+{% block javascripts %}
+<!-- Specific Page JS goes HERE  -->
+{% endblock javascripts %}

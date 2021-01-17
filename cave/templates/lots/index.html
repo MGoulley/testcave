@@ -1,0 +1,111 @@
+{% extends "layouts/base-site.html" %}
+
+{% block title %} CREATE - Lot {% endblock %}
+
+{% block content %}
+
+<form method="POST" class="post-form" action="create">
+  {% csrf_token %}
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-8">
+        <div class="card">
+          <div class="card-header">Creation d'un lot</div>
+          <div class="card-body">
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Nom du Lot :</span></div>
+                {{ form.nom }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Millesime :</span></div>
+                {{ form.millesime }}
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Date de Creation :</span></div>
+                {{ form.dateCreation }}
+              </div>
+            </div>
+            <div class="form-group form-actions">
+              <button class="btn btn-sm btn-primary" type="submit">Envoyer</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div id="duplicater">
+          <div class="card">
+            <div class="card-header">Marcs</div>
+            <div class="card-body">
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Marc :</span></div>
+                  <select name="marc" class="form-control" id="marc">
+                    <option selected disabled hidden>--</option>
+                    {% for marc in marcs %}
+                    <option value="{{marc.idMarc}}">{{marc.idMarc}} ({{marc.volumeMarc}} hL)</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="input-group">
+                  <div class="input-group-prepend"><span class="input-group-text">Volume :</span></div>
+                  {{ form.volume }}
+                  <div id="appender" class="input-group-append"><span class="input-group-text">hL</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card" id="card-button">
+          <div class="card-body">
+            <button class="btn btn-outline-success btn-lg btn-block" onclick="duplicate()" type="button">+ Ajouter un autre marc</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock content %}
+
+{% block javascripts %}
+<script>
+  var index = 1;
+  var original = document.getElementById('duplicater');
+
+  function duplicate() {
+    var d1 = document.getElementById('card-button');
+    var clone = original.cloneNode(true);
+    clone.id = "duplicater" + ++index;
+    var card_node = null;
+    for (var i = 0; i < clone.childNodes.length; i++) {
+        if (clone.childNodes[i].className == "card") {
+          card_node = clone.childNodes[i];
+          break;
+        }        
+    }
+    var card_body_node = null;
+    for (var i = 0; i < card_node.childNodes.length; i++) {
+        if (card_node.childNodes[i].className == "card-body") {
+          card_body_node = card_node.childNodes[i];
+          break;
+        }        
+    }
+    
+    card_body_node.innerHTML += "<div class=\"form-group form-actions\"><button class=\"btn btn-sm btn-danger\" id=\"div-"+ index +"\" onclick=\"remove(this.id)\" >Retirer</button></div>";
+    d1.insertAdjacentHTML('beforebegin', clone.innerHTML);
+  }
+
+  function remove(clicked_id) {
+    var el = document.getElementById(clicked_id).parentNode.parentNode.parentNode;
+    el.remove();
+  }
+</script>
+{% endblock javascripts %}

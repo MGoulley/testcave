@@ -10,4 +10,5 @@ urlpatterns = [
     path("administration/", include("administration.urls")),
     path("entrants/", include("entrants.urls")),
     path("vendange/", include("vendange.urls")),
+    path("cave/", include("cave.urls")),
 ]

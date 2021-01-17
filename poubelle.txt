@@ -84,3 +84,32 @@ def organisation_destroy(request, id):
             'class': "form-control"
         }
     )) """
+
+
+
+
+
+
+
+      function djangoObjectToJson(djangoObject){
+    returnedObject = ((djangoObject).replace(/&(l|g|quo)t;/g, function(a,b){
+            return {
+                l   : '<',
+                g   : '>',
+                quo : '"'
+            }[b];
+        }));
+    returnedObject = returnedObject.replace(/u'/g, '\'');
+    returnedObject = returnedObject.replace(/'/g, '\"');
+    console.log(returnedObject);
+    return JSON.parse( returnedObject );
+  }
+
+  var listt = djangoObjectToJson("{{marcsJSON}}");
+  console.log(listt);
+
+  function getValueOfSelect(object){
+    var value = object.value;
+    console.log(value);
+    console.log(document.getElementById('appender'));
+  }
